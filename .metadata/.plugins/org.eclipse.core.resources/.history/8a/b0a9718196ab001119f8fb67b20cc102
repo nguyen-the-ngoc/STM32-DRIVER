@@ -1,0 +1,36 @@
+/*
+ * stm32_GPIO.h
+ *
+ *  Created on: Sep 7, 2026
+ *      Author: theng
+ */
+
+#ifndef INC_STM32_GPIO_H_
+#define INC_STM32_GPIO_H_
+#include "stm32_103.h"
+
+//typedef struct
+//{
+//    __vo uint8_t GPIO_Pin_Number;
+//    __vo uint8_t GPIO_Pin_Mode;
+//    __vo uint8_t CRHGPIO_Pin_Speed;
+//}GPIO_TypeDef_t;
+//
+//typedef struct
+//{
+//    __vo uint32_t CRL;
+//    __vo uint32_t CRH;
+//    __vo uint32_t IDR;
+//    __vo uint32_t ODR;
+//    __vo uint32_t BSRR;
+//    __vo uint32_t BRR;
+//    __vo uint32_t LCKR;
+//}GPIO_Config_t;
+//
+//typedef struct
+//{
+//    GPIO_TypeDef_t *pGPIOx;
+//    GPIO_Config_t *pGPIO_Config;
+//}GPIO_Handle_t;
+
+#endif /* INC_STM32_GPIO_H_ */

@@ -1,0 +1,115 @@
+/*
+ * stm32_GPIO.c
+ *
+ *  Created on: Sep 7, 2026
+ *      Author: theng
+ */
+
+#include "stm32_GPIO.h"
+
+void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
+
+    GPIO_PeriClockControl(pGPIOHandle.pGPIOx, ENABLE);
+    
+    uint32_t temp = 0;
+    if (pGPIOHandle->pGPIOx->GPIO_Pin_Mode <= GPIO_MODE_OUTPUT_SPH)
+    {
+        if (pGPIOHandle->pGPIOx->GPIO_Pin_Number <=7)
+        {
+            temp = (pGPIOHandle->pGPIO_Config->CRL & ~(0xF << (4 * pGPIOHandle->pGPIOx->GPIO_Pin_Number)));
+            temp |= (pGPIOHandle->pGPIOx->GPIO_Pin_Mode << (4 * pGPIOHandle->pGPIOx->GPIO_Pin_Number));
+            pGPIOHandle->pGPIO_Config->CRL = temp;
+            temp = (pGPIOHandle->pGPIO_Config->CRL & ~(0xF << ((4 * pGPIOHandle->pGPIOx->GPIO_Pin_Number) + 2)));
+            temp |= (pGPIOHandle->pGPIOx->CRHGPIO_Pin_Speed << ((4 * pGPIOHandle->pGPIOx->GPIO_Pin_Number) + 2));
+            pGPIOHandle->pGPIO_Config->CRL = temp;
+        }
+        else
+        {
+            temp = (pGPIOHandle->pGPIO_Config->CRH & ~(0xF << (4 * (pGPIOHandle->pGPIOx->GPIO_Pin_Number))));
+            temp |= (pGPIOHandle->pGPIOx->GPIO_Pin_Mode << (4 * (pGPIOHandle->pGPIOx->GPIO_Pin_Number)));
+            pGPIOHandle->pGPIO_Config->CRH = temp;
+            temp = (pGPIOHandle->pGPIO_Config->CRH & ~(0xF << ((4 * (pGPIOHandle->pGPIOx->GPIO_Pin_Number)) + 2)));
+            temp |= (pGPIOHandle->pGPIOx->CRHGPIO_Pin_Speed << ((4 * (pGPIOHandle->pGPIOx->GPIO_Pin_Number)) + 2));
+            pGPIOHandle->pGPIO_Config->CRH = temp;
+        }
+
+    }
+    else
+    {
+        /* code */
+    }
+}
+
+
+void GPIO_DeInit(GPIO_RegDef_t *pGPIOx){}
+void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi){
+    if (EnorDi == ENABLE)
+    {
+        if (pGPIOx == GPIOA)
+        {
+            GPIOA_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOB)
+        {
+            GPIOB_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOC)
+        {
+            GPIOC_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOD)
+        {
+            GPIOD_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOE)   
+        {
+            GPIOE_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOF)
+        {
+            GPIOF_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOG)
+        {
+            GPIOG_PCLK_EN();
+        }      
+    }
+    else
+    {
+        if (pGPIOx == GPIOA)
+        {
+            GPIOA_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOB)
+        {
+            GPIOB_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOC)
+        {
+            GPIOC_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOD)
+        {
+            GPIOD_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOE)   
+        {
+            GPIOE_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOF)
+        {
+            GPIOF_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOG)
+        {
+            GPIOG_PCLK_DIS();
+        }    
+    }
+
+}
+
+void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber, uint8_t Value){}
+void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber){}
+uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber){}
+void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi){}
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority){}
