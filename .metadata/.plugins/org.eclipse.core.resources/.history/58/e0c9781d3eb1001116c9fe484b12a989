@@ -51,6 +51,17 @@ typedef struct
 
 typedef struct
 {
+    __vo uint32_t CRL;
+    __vo uint32_t CRH;
+    __vo uint32_t IDR;
+    __vo uint32_t ODR;
+    __vo uint32_t BSRR;
+    __vo uint32_t BRR;
+    __vo uint32_t LCKR;
+}GPIO_Config_t;
+
+typedef struct
+{
     GPIO_TypeDef_t *pGPIOx;
     GPIO_Config_t *pGPIO_Config;
 }GPIO_Handle_t;
@@ -58,9 +69,9 @@ typedef struct
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle);
 void GPIO_DeInit(GPIO_TypeDef_t *pGPIOx);
 void GPIO_PeriClockControl(GPIO_TypeDef_t *pGPIOx, uint8_t EnorDi);
-void GPIO_WriteToOutputPin(GPIO_Config_t *pPinConfig, uint8_t PinNumber, uint8_t Value);
-void GPIO_ToggleOutputPin(GPIO_Config_t *pPinConfig, uint8_t PinNumber);
-uint8_t GPIO_ReadFromInputPin(GPIO_Config_t *pPinConfig, uint8_t PinNumber);
+void GPIO_WriteToOutputPin(GPIO_TypeDef_t *pGPIOx, uint8_t PinNumber, uint8_t Value);
+void GPIO_ToggleOutputPin(GPIO_TypeDef_t *pGPIOx, uint8_t PinNumber);
+uint8_t GPIO_ReadFromInputPin(GPIO_TypeDef_t *pGPIOx, uint8_t PinNumber);
 void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi);
 void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
 

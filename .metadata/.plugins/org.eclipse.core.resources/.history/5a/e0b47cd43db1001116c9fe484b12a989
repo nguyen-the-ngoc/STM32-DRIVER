@@ -46,64 +46,64 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 void GPIO_DeInit(GPIO_TypeDef_t *pGPIOx){
     if (pGPIOx == GPIOA)
     {
-        GPIOA_RS_RCC();
+        GPIOA_PCLK_EN();
     }
     else if (pGPIOx == GPIOB)
     {
-        GPIOB_RS_RCC();
+        GPIOB_PCLK_EN();
     }
     else if (pGPIOx == GPIOC)
     {
-        GPIOC_RS_RCC();
+        GPIOC_PCLK_EN();
     }
     else if (pGPIOx == GPIOD)
     {
-        GPIOD_RS_RCC();
+        GPIOD_PCLK_EN();
     }
-    else if (pGPIOx == GPIOE)
+    else if (pGPIOx == GPIOE)   
     {
-        GPIOE_RS_RCC();
+        GPIOE_PCLK_EN();
     }
     else if (pGPIOx == GPIOF)
     {
-        GPIOF_RS_RCC();
+        GPIOF_PCLK_EN();
     }
     else if (pGPIOx == GPIOG)
     {
-        GPIOG_RS_RCC();
-    }
+        GPIOG_PCLK_EN();
+    }   
 }
 void GPIO_PeriClockControl(GPIO_TypeDef_t *pGPIOx, uint8_t EnorDi){
     if (EnorDi == ENABLE)
     {
         if (pGPIOx == GPIOA)
         {
-            GPIOA_PCLK_EN();
+            GPIOA_RS_RCC();
         }
         else if (pGPIOx == GPIOB)
         {
-            GPIOB_PCLK_EN();
+            GPIOB_RS_RCC();
         }
         else if (pGPIOx == GPIOC)
         {
-            GPIOC_PCLK_EN();
+            GPIOC_RS_RCC();
         }
         else if (pGPIOx == GPIOD)
         {
-            GPIOD_PCLK_EN();
+            GPIOD_RS_RCC();
         }
-        else if (pGPIOx == GPIOE)
+        else if (pGPIOx == GPIOE)   
         {
-            GPIOE_PCLK_EN();
+            GPIOE_RS_RCC();
         }
         else if (pGPIOx == GPIOF)
         {
-            GPIOF_PCLK_EN();
+            GPIOF_RS_RCC();
         }
         else if (pGPIOx == GPIOG)
         {
-            GPIOG_PCLK_EN();
-        }
+            GPIOG_RS_RCC();
+        }      
     }
     else
     {
@@ -138,25 +138,9 @@ void GPIO_PeriClockControl(GPIO_TypeDef_t *pGPIOx, uint8_t EnorDi){
     }
 
 }
-void GPIO_WriteToOutputPin(GPIO_Config_t *pPinConfig, uint8_t PinNumber, uint8_t Value)
-{
-    if (Value == GPIO_PIN_SET)
-    {
-        pPinConfig->BSRR = (1U << PinNumber);
-    }
-    else
-    {
-        pPinConfig->BSRR = (1U << (PinNumber + 16U));
-    }
-}
-void GPIO_ToggleOutputPin(GPIO_Config_t *pPinConfig, uint8_t PinNumber){
-    pPinConfig->ODR ^= (1 << PinNumber);
-}
-uint8_t GPIO_ReadFromInputPin(GPIO_Config_t *pPinConfig, uint8_t PinNumber){
-    uint8_t value;
-    value = (uint8_t)((pPinConfig->IDR >> PinNumber) & 0x00000001);
-	return value;
-}
+void GPIO_WriteToOutputPin(GPIO_TypeDef_t *pGPIOx, uint8_t PinNumber, uint8_t Value){}
+void GPIO_ToggleOutputPin(GPIO_TypeDef_t *pGPIOx, uint8_t PinNumber){}
+uint8_t GPIO_ReadFromInputPin(GPIO_TypeDef_t *pGPIOx, uint8_t PinNumber){}
 void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi){
 
 }

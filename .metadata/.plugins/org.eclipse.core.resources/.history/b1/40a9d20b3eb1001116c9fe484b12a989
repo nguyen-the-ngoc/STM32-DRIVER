@@ -44,15 +44,15 @@ typedef struct{
 	__vo uint32_t BSRR;
 	__vo uint32_t BRR;
 	__vo uint32_t LCKR;
-}GPIO_Config_t;
+}GPIO_TypeDef;
 
-#define GPIOA ((GPIO_TypeDef_t *)GPIOA_BASEADDR)
-#define GPIOB ((GPIO_TypeDef_t *)GPIOB_BASEADDR)
-#define GPIOC ((GPIO_TypeDef_t *)GPIOC_BASEADDR)
-#define GPIOD ((GPIO_TypeDef_t *)GPIOD_BASEADDR)
-#define GPIOE ((GPIO_TypeDef_t *)GPIOE_BASEADDR)
-#define GPIOF ((GPIO_TypeDef_t *)GPIOF_BASEADDR)
-#define GPIOG ((GPIO_TypeDef_t *)GPIOG_BASEADDR)
+#define GPIOA ((GPIO_TypeDef *)GPIOA_BASEADDR)
+#define GPIOB ((GPIO_TypeDef *)GPIOB_BASEADDR)
+#define GPIOC ((GPIO_TypeDef *)GPIOC_BASEADDR)
+#define GPIOD ((GPIO_TypeDef *)GPIOD_BASEADDR)
+#define GPIOE ((GPIO_TypeDef *)GPIOE_BASEADDR)
+#define GPIOF ((GPIO_TypeDef *)GPIOF_BASEADDR)
+#define GPIOG ((GPIO_TypeDef *)GPIOG_BASEADDR)
 
 //Khai báo các thanh ghi của RCC
 typedef struct{

@@ -60,8 +60,8 @@ all: main-build
 main-build: Driver_1.elf secondary-outputs
 
 # Tool invocations
-Driver_1.elf Driver_1.map: $(OBJS) $(USER_OBJS) C:\Users\theng\STM32CubeIDE\workspace_2.2.0\Driver_1\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Driver_1.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\theng\STM32CubeIDE\workspace_2.2.0\Driver_1\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Driver_1.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Driver_1.elf Driver_1.map: $(OBJS) $(USER_OBJS) C:\Users\theng\Workspace\STM32-DRIVER\Driver_1\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Driver_1.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\theng\Workspace\STM32-DRIVER\Driver_1\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Driver_1.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
