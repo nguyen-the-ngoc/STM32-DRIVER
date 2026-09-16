@@ -31,6 +31,7 @@
 #define GPIOF_BASEADDR		(APB2PERIPH_BASEADDR + 0x1C00UL)
 #define GPIOG_BASEADDR		(APB2PERIPH_BASEADDR + 0x2000UL)
 #define EXTI_BASEADDR		(APB2PERIPH_BASEADDR + 0x0400UL)
+#define AFIO_BASEADDR		(APB2PERIPH_BASEADDR + 0x0000UL)
 
 //Cấu hình địa chỉ RCC - cấp Clock cho BUS APB2		|| AHB
 #define RCC_BASEADDR			(AHBPERIPH_BASEADDR + 0x1000UL)
@@ -66,9 +67,9 @@ typedef struct{
 	__vo uint32_t APB1ENR;					/* Offset: 0x1C */
 	__vo uint32_t BDCR;						/* Offset: 0x20 */
 	__vo uint32_t CSR;						/* Offset: 0x24 */
-}RCC_TypeDef;
+}RCC_TypeDef_t;
 
-#define RCC ((RCC_TypeDef *)RCC_BASEADDR)
+#define RCC ((RCC_TypeDef_t *)RCC_BASEADDR)
 
 //Khai bao các thanh ghi của EXTI
 typedef struct{
@@ -78,9 +79,21 @@ typedef struct{
 	__vo uint32_t FTSR;						/* Offset: 0x0C */
 	__vo uint32_t SWIER;					/* Offset: 0x10 */
 	__vo uint32_t PR;						/* Offset: 0x14 */
-}EXTI_TypeDef;
+}EXTI_TypeDef_t;
 
-#define EXTI ((EXTI_TypeDef *)EXTI_BASEADDR)
+#define EXTI ((EXTI_TypeDef_t *)EXTI_BASEADDR)
+
+//Khai báo các thanh ghi của NVIC
+typedef struct 
+{
+	__vo uint32_t EVCR;						/* Offset: 0x000 */
+	__vo uint32_t MAPR;						/* Offset: 0x004 */
+	__vo uint32_t EXTICR[4];				/* Offset: 0x008 - 0x014 */
+	__vo uint32_t MAPR2;					/* Offset: 0x018 */
+}AFIO_TypeDef_t;
+
+#define AFIO ((AFIO_TypeDef_t *)AFIO_BASEADDR)
+
 
 //Clock Enable Macro for GPTIx Peripheral
 #define GPIOA_PCLK_EN() (RCC->APB2ENR |= (1 << 2))
@@ -116,4 +129,6 @@ typedef struct{
 #define	GPIOF_RS_RCC()	do	{(RCC->APB2RSTR |= (1 << 7)); (RCC->APB2RSTR &= ~(1 << 7)); } while (0)
 #define	GPIOG_RS_RCC()	do	{(RCC->APB2RSTR |= (1 << 8)); (RCC->APB2RSTR &= ~(1 << 8)); } while (0)
 
+// EXTI IRQ Number
+#define GPIO_BASEADR_TO_NUMPIN(x)	((x == GPIOA) ? 0 : (x == GPIOB) ? 1 : (x == GPIOC) ? 2 : (x == GPIOD) ? 3 : (x == GPIOE) ? 4 : (x == GPIOF) ? 5 : (x == GPIOG) ? 6 : -1)
 #endif /* STM32_103_H_ */

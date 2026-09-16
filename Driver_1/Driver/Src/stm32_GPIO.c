@@ -40,7 +40,26 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
     }
     else
     {
-        /* code */
+        if (pGPIOHandle->pGPIOx->GPIO_Pin_Mode == GPIO_MODE_IT_FT)
+        {
+            EXTI->FTSR |= (1<< pGPIOHandle->pGPIOx->GPIO_Pin_Number);       // Enable falling edge trigger
+            EXTI->RTSR &= ~(1<< pGPIOHandle->pGPIOx->GPIO_Pin_Number);      // Disable rising edge trigger
+        }
+        else if (pGPIOHandle->pGPIOx->GPIO_Pin_Mode == GPIO_MODE_IT_RT)
+        {
+            EXTI->FTSR &= ~(1<< pGPIOHandle->pGPIOx->GPIO_Pin_Number);       // Disable falling edge trigger
+            EXTI->RTSR |= (1<< pGPIOHandle->pGPIOx->GPIO_Pin_Number);       // Enable rising edge trigger
+        }
+        else if (pGPIOHandle->pGPIOx->GPIO_Pin_Mode == GPIO_MODE_IT_RFT)
+        {
+            EXTI->FTSR |= (1<< pGPIOHandle->pGPIOx->GPIO_Pin_Number);      // Enable falling edge trigger
+            EXTI->RTSR |= (1<< pGPIOHandle->pGPIOx->GPIO_Pin_Number);       // Enable rising edge trigger  
+        }
+        uint8_t portcode = GPIO_BASEADR_TO_NUMPIN(pGPIOHandle->pGPIOx);
+        uint8_t temp1 = (pGPIOHandle->pGPIOx->GPIO_Pin_Number % 4);
+        uint8_t temp2 = (pGPIOHandle->pGPIOx->GPIO_Pin_Number / 4);
+        AFIO->EXTICR[temp2] = portcode << (temp1 * 4);                  // Configure the EXTI line to the corresponding GPIO port
+        EXTI->IMR |= (1<< pGPIOHandle->pGPIOx->GPIO_Pin_Number);       // Enable interrupt mask
     }
 }
 void GPIO_DeInit(GPIO_TypeDef_t *pGPIOx){
