@@ -18,12 +18,42 @@
 
 #include <stdint.h>
 #include "stm32_103.h"
+#include "stm32_GPIO.h"
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
+void delay(uint32_t time)
+{
+    for (uint32_t i = 0; i < time * 1000; i++)
+    {
+        __asm("NOP");
+    }
+}
+
 int main(void)
 {
+  GPIO_Config_t GPIO_LED_Config;
+
+  GPIO_Handle_t GPIO_LED;
+
+  GPIO_LED.pGPIOx = GPIOC;
+  GPIO_LED.pGPIO_Config = &GPIO_LED_Config;
+
+  GPIO_LED.pGPIO_Config->GPIO_Pin_Number = GPIO_PIN_NO_13;
+  GPIO_LED.pGPIO_Config->GPIO_Pin_Mode = GPIO_MODE_OUTPUT;
+  GPIO_LED.pGPIO_Config->GPIO_Type = GPIO_MODE_0;
+  GPIO_LED.pGPIO_Config->GPIO_Pin_Speed = GPIO_SPEED_LOW;
+  GPIO_Init(&GPIO_LED);
     /* Loop forever */
-	for(;;);
+  while (1)
+  {
+    GPIO_ToggleOutputPin(GPIOC, GPIO_PIN_NO_13);
+    delay(500);
+  }
+  
+}
+
+void EXTI0_IRQHandler(){
+  GPIO_IRQHandling(0);
 }

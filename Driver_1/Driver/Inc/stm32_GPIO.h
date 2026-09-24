@@ -30,16 +30,21 @@
 #define GPIO_MODE_INPUT		0 // Input mode (reset state)
 #define GPIO_MODE_ANALOG	1 // Analog mode
 #define GPIO_MODE_OUTPUT	2 // Output mode
-#define GPIO_MODE_AF		3 // Alternate function mode
-#define GPIO_MODE_IT_FT		4 // Interrupt mode, falling edge trigger
-#define GPIO_MODE_IT_RT		5 // Interrupt mode, rising edge trigger
-#define GPIO_MODE_IT_RFT	6 // Interrupt mode, rising/falling edge trigger
+#define GPIO_MODE_IT_FT		3 // Interrupt mode, falling edge trigger
+#define GPIO_MODE_IT_RT		4 // Interrupt mode, rising edge trigger
+#define GPIO_MODE_IT_RFT	5 // Interrupt mode, rising/falling edge trigger
 
 /* GPIO Output Type */
-#define GPIO_INPUT_MODE_0   0 // Analog mode | General purpose output push-pull (reset state)
-#define GPIO_INPUT_MODE_1	1 // Floating input (reset state) | General purpose output open-drain
-#define GPIO_INPUT_MODE_2   2 // Input with pull-up / pull-down || Alternate function output push-pull
-#define GPIO_INPUT_MODE_3   3 // Reserved | Alternate function output open-drain
+#define GPIO_MODE_0         0 // Analog mode | General purpose output push-pull (reset state)
+#define GPIO_MODE_1	        1 // Floating input (reset state) | General purpose output open-drain
+#define GPIO_MODE_2         2 // Input with pull-up / pull-down || Alternate function output push-pull
+#define GPIO_MODE_3         3 // Reserved | Alternate function output open-drain
+
+/* GPIO Speed */
+#define GPIO_INPUT_MODE_STATE		0 // Input mode (reset state)
+#define GPIO_SPEED_MEDIUM	        1 // Output mode, max speed 10 MHz
+#define GPIO_SPEED_LOW		        2 // Output mode, max speed 2 MHz
+#define GPIO_SPEED_HIGH	            3 // Output mode, max speed 50 MHz
 
 typedef struct
 {
@@ -47,21 +52,21 @@ typedef struct
     __vo uint8_t GPIO_Pin_Mode;
     __vo uint8_t GPIO_Type;
     __vo uint8_t GPIO_Pin_Speed;
-}GPIO_TypeDef_t;
+}GPIO_Config_t;
 
 typedef struct
 {
-    GPIO_TypeDef_t *pGPIOx;
+    GPIO_Typedef_t *pGPIOx;
     GPIO_Config_t *pGPIO_Config;
 }GPIO_Handle_t;
 
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle);
-void GPIO_DeInit(GPIO_TypeDef_t *pGPIOx);
-void GPIO_PeriClockControl(GPIO_TypeDef_t *pGPIOx, uint8_t EnorDi);
-void GPIO_WriteToOutputPin(GPIO_Config_t *pPinConfig, uint8_t PinNumber, uint8_t Value);
-void GPIO_ToggleOutputPin(GPIO_Config_t *pPinConfig, uint8_t PinNumber);
-uint8_t GPIO_ReadFromInputPin(GPIO_Config_t *pPinConfig, uint8_t PinNumber);
+void GPIO_DeInit(GPIO_Typedef_t *pGPIOx);
+void GPIO_PeriClockControl(GPIO_Typedef_t *pGPIOx, uint8_t EnorDi);
+void GPIO_WriteToOutputPin(GPIO_Typedef_t *pGPIOx, uint8_t PinNumber, uint8_t Value);
+void GPIO_ToggleOutputPin(GPIO_Typedef_t *pGPIOx, uint8_t PinNumber);
+uint8_t GPIO_ReadFromInputPin(GPIO_Typedef_t *pGPIOx, uint8_t PinNumber);
 void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi);
 void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
-
+void GPIO_IRQHandling(uint8_t PinNumber);
 #endif /* INC_STM32_GPIO_H_ */
