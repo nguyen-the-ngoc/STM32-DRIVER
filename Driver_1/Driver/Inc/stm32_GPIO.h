@@ -34,11 +34,14 @@
 #define GPIO_MODE_IT_RT		4 // Interrupt mode, rising edge trigger
 #define GPIO_MODE_IT_RFT	5 // Interrupt mode, rising/falling edge trigger
 
-/* GPIO Output Type */
-#define GPIO_MODE_0         0 // Analog mode | General purpose output push-pull (reset state)
-#define GPIO_MODE_1	        1 // Floating input (reset state) | General purpose output open-drain
-#define GPIO_MODE_2         2 // Input with pull-up / pull-down || Alternate function output push-pull
-#define GPIO_MODE_3         3 // Reserved | Alternate function output open-drain
+/* CNF field values; meaning depends on input/output mode */
+#define GPIO_CNF_ANALOG             0
+#define GPIO_CNF_INPUT_FLOATING     1
+#define GPIO_CNF_INPUT_PU_PD        2
+#define GPIO_CNF_OUTPUT_PP          0
+#define GPIO_CNF_OUTPUT_OD          1
+#define GPIO_CNF_AF_PP              2
+#define GPIO_CNF_AF_OD              3
 
 /* GPIO Speed */
 #define GPIO_INPUT_MODE_STATE		0 // Input mode (reset state)

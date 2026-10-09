@@ -7,55 +7,103 @@
 
 #include "stm32_GPIO.h"
 
-void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
-
+void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
+{
     GPIO_PeriClockControl(pGPIOHandle->pGPIOx, ENABLE);
-    
-    uint32_t temp = 0;
-    if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode <= GPIO_MODE_OUTPUT)
+
+    uint32_t temp = 0U;
+    uint32_t pin_number = pGPIOHandle->pGPIO_Config->GPIO_Pin_Number;
+    uint32_t mode_value = GPIO_INPUT_MODE_STATE;
+    uint32_t cnf_value = pGPIOHandle->pGPIO_Config->GPIO_Type;
+
+    if (pin_number > GPIO_PIN_NO_15)
     {
-        if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Number <=7)
-        {
-            temp = (pGPIOHandle->pGPIOx->CRL & ~(0xF << (4 * pGPIOHandle->pGPIO_Config->GPIO_Pin_Number)));
-            temp |= (pGPIOHandle->pGPIO_Config->GPIO_Pin_Speed << (4 * pGPIOHandle->pGPIO_Config->GPIO_Pin_Number));
-            pGPIOHandle->pGPIOx->CRL = temp;
-            temp = (pGPIOHandle->pGPIOx->CRL & ~(0xF << ((4 * pGPIOHandle->pGPIO_Config->GPIO_Pin_Number) + 2)));
-            temp |= (pGPIOHandle->pGPIO_Config->GPIO_Type << ((4 * pGPIOHandle->pGPIO_Config->GPIO_Pin_Number) + 2));
-            pGPIOHandle->pGPIOx->CRL = temp;
-        }
-        else
-        {
-            temp = (pGPIOHandle->pGPIOx->CRH & ~(0xF << (4 * (pGPIOHandle->pGPIO_Config->GPIO_Pin_Number))));
-            temp |= (pGPIOHandle->pGPIO_Config->GPIO_Pin_Speed << (4 * (pGPIOHandle->pGPIO_Config->GPIO_Pin_Number)));
-            pGPIOHandle->pGPIOx->CRH = temp;
-            temp = (pGPIOHandle->pGPIOx->CRH & ~(0xF << ((4 * (pGPIOHandle->pGPIO_Config->GPIO_Pin_Number)) + 2)));
-            temp |= (pGPIOHandle->pGPIO_Config->GPIO_Type << ((4 * (pGPIOHandle->pGPIO_Config->GPIO_Pin_Number)) + 2));
-            pGPIOHandle->pGPIOx->CRH = temp;
-        }
+        return;
+    }
+
+    /* Determine MODE and CNF values */
+    if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_INPUT)
+    {
+        mode_value = GPIO_INPUT_MODE_STATE;
+    }
+    else if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_ANALOG)
+    {
+        mode_value = GPIO_INPUT_MODE_STATE;
+        cnf_value = GPIO_CNF_ANALOG;
+    }
+    else if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_OUTPUT)
+    {
+        mode_value = pGPIOHandle->pGPIO_Config->GPIO_Pin_Speed;
+    }
+    else if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_IT_FT ||
+             pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_IT_RT ||
+             pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_IT_RFT)
+    {
+        mode_value = GPIO_INPUT_MODE_STATE;
     }
     else
     {
-        SYSCFG_PCLK_EN();
+        return;
+    }
+
+    /* Configure GPIO, including pins used for interrupts */
+    if (pin_number <= GPIO_PIN_NO_7)
+    {
+        /* Clear and set MODE: 2 bits */
+        temp = pGPIOHandle->pGPIOx->CRL & ~(0x3U << (4U * pin_number));
+        temp |= (mode_value & 0x3U) << (4U * pin_number);
+
+        /* Clear and set CNF: 2 bits */
+        temp &= ~(0x3U << ((4U * pin_number) + 2U));
+        temp |= (cnf_value & 0x3U) << ((4U * pin_number) + 2U);
+
+        pGPIOHandle->pGPIOx->CRL = temp;
+    }
+    else
+    {
+        /* CRH starts with pin 8 at bit 0 */
+        temp = pGPIOHandle->pGPIOx->CRH & ~(0x3U << (4U * (pin_number - 8U)));
+        temp |= (mode_value & 0x3U) << (4U * (pin_number - 8U));
+
+        temp &= ~(0x3U << ((4U * (pin_number - 8U)) + 2U));
+        temp |= (cnf_value & 0x3U) << ((4U * (pin_number - 8U)) + 2U);
+
+        pGPIOHandle->pGPIOx->CRH = temp;
+    }
+
+    /* Additional configuration for interrupt modes */
+    if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_IT_FT ||
+        pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_IT_RT ||
+        pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_IT_RFT)
+    {
+        SYSCFG_PCLK_EN(); /* Must enable AFIO on STM32F103 */
+
         if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_IT_FT)
         {
-            EXTI->FTSR |= (1<< pGPIOHandle->pGPIO_Config->GPIO_Pin_Number);       // Enable falling edge trigger
-            EXTI->RTSR &= ~(1<< pGPIOHandle->pGPIO_Config->GPIO_Pin_Number);      // Disable rising edge trigger
+            EXTI->FTSR |= (1U << pin_number);
+            EXTI->RTSR &= ~(1U << pin_number);
         }
         else if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_IT_RT)
         {
-            EXTI->FTSR &= ~(1<< pGPIOHandle->pGPIO_Config->GPIO_Pin_Number);       // Disable falling edge trigger
-            EXTI->RTSR |= (1<< pGPIOHandle->pGPIO_Config->GPIO_Pin_Number);       // Enable rising edge trigger
+            EXTI->FTSR &= ~(1U << pin_number);
+            EXTI->RTSR |= (1U << pin_number);
         }
-        else if (pGPIOHandle->pGPIO_Config->GPIO_Pin_Mode == GPIO_MODE_IT_RFT)
+        else
         {
-            EXTI->FTSR |= (1<< pGPIOHandle->pGPIO_Config->GPIO_Pin_Number);      // Enable falling edge trigger
-            EXTI->RTSR |= (1<< pGPIOHandle->pGPIO_Config->GPIO_Pin_Number);       // Enable rising edge trigger  
+            EXTI->FTSR |= (1U << pin_number);
+            EXTI->RTSR |= (1U << pin_number);
         }
-        uint8_t portcode = GPIO_BASEADR_TO_NUMPIN(pGPIOHandle->pGPIOx);
-        uint8_t temp1 = (pGPIOHandle->pGPIO_Config->GPIO_Pin_Number % 4);
-        uint8_t temp2 = (pGPIOHandle->pGPIO_Config->GPIO_Pin_Number / 4);
-        AFIO->EXTICR[temp2] = portcode << (temp1 * 4);                  // Configure the EXTI line to the corresponding GPIO port
-        EXTI->IMR |= (1<< pGPIOHandle->pGPIO_Config->GPIO_Pin_Number);       // Enable interrupt mask
+
+        uint32_t portcode = GPIO_BASEADR_TO_NUMPIN(pGPIOHandle->pGPIOx);
+        uint32_t temp1 = pin_number % 4U;
+        uint32_t temp2 = pin_number / 4U;
+
+        /* Change only the selected EXTI field */
+        temp = AFIO->EXTICR[temp2] & ~(0xFU << (temp1 * 4U));
+        temp |= portcode << (temp1 * 4U);
+        AFIO->EXTICR[temp2] = temp;
+
+        EXTI->IMR |= (1U << pin_number);
     }
 }
 void GPIO_DeInit(GPIO_Typedef_t *pGPIOx){

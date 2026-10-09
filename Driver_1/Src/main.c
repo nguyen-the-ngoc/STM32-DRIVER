@@ -33,23 +33,25 @@ void delay(uint32_t time)
 
 int main(void)
 {
-  GPIO_Config_t GPIO_LED_Config;
+  GPIO_Config_t led_config = {
+      .GPIO_Pin_Number = GPIO_PIN_NO_13,
+      .GPIO_Pin_Mode = GPIO_MODE_OUTPUT,
+      .GPIO_Type = GPIO_CNF_ANALOG,  // CNF = 00
+      .GPIO_Pin_Speed = GPIO_SPEED_LOW  // MODE = 10
+  };
+  
+  GPIO_Handle_t led = {
+      .pGPIOx = GPIOC,
+      .pGPIO_Config = &led_config
+  };
+  
+  GPIO_Init(&led);
 
-  GPIO_Handle_t GPIO_LED;
-
-  GPIO_LED.pGPIOx = GPIOC;
-  GPIO_LED.pGPIO_Config = &GPIO_LED_Config;
-
-  GPIO_LED.pGPIO_Config->GPIO_Pin_Number = GPIO_PIN_NO_13;
-  GPIO_LED.pGPIO_Config->GPIO_Pin_Mode = GPIO_MODE_OUTPUT;
-  GPIO_LED.pGPIO_Config->GPIO_Type = GPIO_MODE_0;
-  GPIO_LED.pGPIO_Config->GPIO_Pin_Speed = GPIO_SPEED_LOW;
-  GPIO_Init(&GPIO_LED);
     /* Loop forever */
   while (1)
   {
     GPIO_ToggleOutputPin(GPIOC, GPIO_PIN_NO_13);
-    delay(500);
+    delay(100);
   }
   
 }
