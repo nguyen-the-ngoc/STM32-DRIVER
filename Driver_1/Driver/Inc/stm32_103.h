@@ -34,6 +34,11 @@
 #define EXTI_BASEADDR		(APB2PERIPH_BASEADDR + 0x0400UL)
 #define AFIO_BASEADDR		(APB2PERIPH_BASEADDR + 0x0000UL)
 
+//SPI peripheral addresses										|| APB2
+#define SPI1_BASEADDR		(APB2PERIPH_BASEADDR + 0x3000UL)	//SPI1 is on APB2 bus
+#define SPI2_BASEADDR		(APB1PERIPH_BASEADDR + 0x3800UL)	//SPI2 is on APB1 bus	
+#define SPI3_BASEADDR		(APB1PERIPH_BASEADDR + 0x3C00UL)	//SPI3 is on APB1 bus
+
 //RCC address - clock control for the APB2 bus		|| AHB
 #define RCC_BASEADDR			(PERIPH_BASEADDR + 0x21000UL)
 
@@ -83,6 +88,23 @@ typedef struct{
 #define GPIOE ((GPIO_Typedef_t *)GPIOE_BASEADDR)
 #define GPIOF ((GPIO_Typedef_t *)GPIOF_BASEADDR)
 #define GPIOG ((GPIO_Typedef_t *)GPIOG_BASEADDR)
+
+// SPI register definition
+typedef struct{
+	__vo uint32_t CR1;						/* Offset: 0x00 */
+	__vo uint32_t CR2;						/* Offset: 0x04 */
+	__vo uint32_t SR;						/* Offset: 0x08 */
+	__vo uint32_t DR;						/* Offset: 0x0C */
+	__vo uint32_t CRCPR;					/* Offset: 0x10 */
+	__vo uint32_t RXCRCR;					/* Offset: 0x14 */
+	__vo uint32_t TXCRCR;					/* Offset: 0x18 */
+	__vo uint32_t I2SCFGR;					/* Offset: 0x1C */
+	__vo uint32_t I2SPR;					/* Offset: 0x20 */
+} SPI_Typedef_t;
+
+#define SPI1 ((SPI_Typedef_t *)SPI1_BASEADDR)
+#define SPI2 ((SPI_Typedef_t *)SPI2_BASEADDR)
+#define SPI3 ((SPI_Typedef_t *)SPI3_BASEADDR)
 
 //RCC register definition
 typedef struct{

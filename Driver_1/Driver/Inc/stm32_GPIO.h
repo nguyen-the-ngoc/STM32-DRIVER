@@ -38,6 +38,7 @@
 #define GPIO_CNF_ANALOG             0
 #define GPIO_CNF_INPUT_FLOATING     1
 #define GPIO_CNF_INPUT_PU_PD        2
+
 #define GPIO_CNF_OUTPUT_PP          0
 #define GPIO_CNF_OUTPUT_OD          1
 #define GPIO_CNF_AF_PP              2

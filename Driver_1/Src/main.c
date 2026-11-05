@@ -33,25 +33,46 @@ void delay(uint32_t time)
 
 int main(void)
 {
-  GPIO_Config_t led_config = {
+  GPIO_Config_t input_A_config = {
+      .GPIO_Pin_Number = GPIO_PIN_NO_11,
+      .GPIO_Pin_Mode = GPIO_MODE_INPUT,
+      .GPIO_Type = GPIO_CNF_INPUT_PU_PD,  // CNF = 00
+      .GPIO_Pin_Speed = GPIO_INPUT_MODE_STATE  // MODE = 10
+  };
+
+  GPIO_Config_t led_C_config = {
       .GPIO_Pin_Number = GPIO_PIN_NO_13,
       .GPIO_Pin_Mode = GPIO_MODE_OUTPUT,
       .GPIO_Type = GPIO_CNF_ANALOG,  // CNF = 00
       .GPIO_Pin_Speed = GPIO_SPEED_LOW  // MODE = 10
   };
   
-  GPIO_Handle_t led = {
+  GPIO_Handle_t input_A = {
+      .pGPIOx = GPIOA,
+      .pGPIO_Config = &input_A_config
+  };
+
+  GPIO_Handle_t led_C = {
       .pGPIOx = GPIOC,
-      .pGPIO_Config = &led_config
+      .pGPIO_Config = &led_C_config
   };
   
-  GPIO_Init(&led);
-
+  GPIO_Init(&input_A);
+  GPIO_Init(&led_C);
+  GPIO_WriteToOutputPin(GPIOC, GPIO_PIN_NO_13, GPIO_PIN_RESET);
+  uint8_t input_state = GPIO_PIN_RESET;
     /* Loop forever */
   while (1)
   {
-    GPIO_ToggleOutputPin(GPIOC, GPIO_PIN_NO_13);
-    delay(100);
+    input_state = GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_11);
+    if (input_state == GPIO_PIN_SET)
+    {
+      GPIO_WriteToOutputPin(GPIOC, GPIO_PIN_NO_13, GPIO_PIN_SET);
+    }
+    else
+    {
+      GPIO_WriteToOutputPin(GPIOC, GPIO_PIN_NO_13, GPIO_PIN_RESET);
+    }
   }
   
 }
