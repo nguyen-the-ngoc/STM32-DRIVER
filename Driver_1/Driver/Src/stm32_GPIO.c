@@ -7,6 +7,73 @@
 
 #include "stm32_GPIO.h"
 
+/* GPIO peripheral clock control function */
+void GPIO_PeriClockControl(GPIO_Typedef_t *pGPIOx, uint8_t EnorDi){
+    if (EnorDi == ENABLE)
+    {
+        if (pGPIOx == GPIOA)
+        {
+            GPIOA_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOB)
+        {
+            GPIOB_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOC)
+        {
+            GPIOC_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOD)
+        {
+            GPIOD_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOE)
+        {
+            GPIOE_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOF)
+        {
+            GPIOF_PCLK_EN();
+        }
+        else if (pGPIOx == GPIOG)
+        {
+            GPIOG_PCLK_EN();
+        }
+    }
+    else
+    {
+        if (pGPIOx == GPIOA)
+        {
+            GPIOA_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOB)
+        {
+            GPIOB_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOC)
+        {
+            GPIOC_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOD)
+        {
+            GPIOD_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOE)   
+        {
+            GPIOE_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOF)
+        {
+            GPIOF_PCLK_DIS();
+        }
+        else if (pGPIOx == GPIOG)
+        {
+            GPIOG_PCLK_DIS();
+        }    
+    }
+}
+
+/* GPIO initialization function */
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 {
     GPIO_PeriClockControl(pGPIOHandle->pGPIOx, ENABLE);
@@ -106,6 +173,8 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
         EXTI->IMR |= (1U << pin_number);
     }
 }
+
+/* GPIO de-initialization function */
 void GPIO_DeInit(GPIO_Typedef_t *pGPIOx){
     if (pGPIOx == GPIOA)
     {
@@ -136,71 +205,8 @@ void GPIO_DeInit(GPIO_Typedef_t *pGPIOx){
         GPIOG_RS_RCC();
     }
 }
-void GPIO_PeriClockControl(GPIO_Typedef_t *pGPIOx, uint8_t EnorDi){
-    if (EnorDi == ENABLE)
-    {
-        if (pGPIOx == GPIOA)
-        {
-            GPIOA_PCLK_EN();
-        }
-        else if (pGPIOx == GPIOB)
-        {
-            GPIOB_PCLK_EN();
-        }
-        else if (pGPIOx == GPIOC)
-        {
-            GPIOC_PCLK_EN();
-        }
-        else if (pGPIOx == GPIOD)
-        {
-            GPIOD_PCLK_EN();
-        }
-        else if (pGPIOx == GPIOE)
-        {
-            GPIOE_PCLK_EN();
-        }
-        else if (pGPIOx == GPIOF)
-        {
-            GPIOF_PCLK_EN();
-        }
-        else if (pGPIOx == GPIOG)
-        {
-            GPIOG_PCLK_EN();
-        }
-    }
-    else
-    {
-        if (pGPIOx == GPIOA)
-        {
-            GPIOA_PCLK_DIS();
-        }
-        else if (pGPIOx == GPIOB)
-        {
-            GPIOB_PCLK_DIS();
-        }
-        else if (pGPIOx == GPIOC)
-        {
-            GPIOC_PCLK_DIS();
-        }
-        else if (pGPIOx == GPIOD)
-        {
-            GPIOD_PCLK_DIS();
-        }
-        else if (pGPIOx == GPIOE)   
-        {
-            GPIOE_PCLK_DIS();
-        }
-        else if (pGPIOx == GPIOF)
-        {
-            GPIOF_PCLK_DIS();
-        }
-        else if (pGPIOx == GPIOG)
-        {
-            GPIOG_PCLK_DIS();
-        }    
-    }
 
-}
+/* GPIO write to output pin function */
 void GPIO_WriteToOutputPin(GPIO_Typedef_t *pGPIOx, uint8_t PinNumber, uint8_t Value)
 {
     if (Value == GPIO_PIN_SET)
@@ -212,14 +218,20 @@ void GPIO_WriteToOutputPin(GPIO_Typedef_t *pGPIOx, uint8_t PinNumber, uint8_t Va
         pGPIOx->BSRR = (1U << (PinNumber + 16U));
     }
 }
+
+/* GPIO toggle output pin function */
 void GPIO_ToggleOutputPin(GPIO_Typedef_t *pGPIOx, uint8_t PinNumber){
     pGPIOx->ODR ^= (1 << PinNumber);
 }
+
+/* GPIO read from input pin function */
 uint8_t GPIO_ReadFromInputPin(GPIO_Typedef_t *pGPIOx, uint8_t PinNumber){
     uint8_t value;
     value = (uint8_t)((pGPIOx->IDR >> PinNumber) & 0x00000001);
 	return value;
 }
+
+/* GPIO interrupt configuration function */
 void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi){
     if (EnorDi == ENABLE)
     {
@@ -292,6 +304,7 @@ void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t EnorDi){
     }
 }
 
+/* GPIO interrupt priority configuration function */
 void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority){
     uint8_t iprx = IRQNumber / 4;
     uint8_t iprx_section = IRQNumber % 4;
@@ -299,6 +312,7 @@ void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority){
     *(NVIC_IPR0 + iprx) |= (IRQPriority << shift_amount);
 }
 
+/* GPIO interrupt handling function */
 void GPIO_IRQHandling(uint8_t PinNumber){
     if (EXTI->PR & (1 << PinNumber))
     {

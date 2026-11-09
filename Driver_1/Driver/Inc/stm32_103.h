@@ -173,6 +173,17 @@ typedef struct
 #define GPIOF_PCLK_DIS() (RCC->APB2ENR &= ~(1 << 7))
 #define GPIOG_PCLK_DIS() (RCC->APB2ENR &= ~(1 << 8))
 
+/* Clock enable macros for SPI peripherals */
+#define SPI1_PCLK_EN() (RCC->APB2ENR |= (1 << 12))
+#define SPI2_PCLK_EN() (RCC->APB1ENR |= (1 << 14))
+#define SPI3_PCLK_EN() (RCC->APB1ENR |= (1 << 15))
+
+/* Clock disable macros for SPI peripherals */
+#define SPI1_PCLK_DIS() (RCC->APB2ENR &= ~(1 << 12))
+#define SPI2_PCLK_DIS() (RCC->APB1ENR &= ~(1 << 14))
+#define SPI3_PCLK_DIS() (RCC->APB1ENR &= ~(1 << 15))
+
+/* Generic Macros */
 #define ENABLE 1
 #define DISABLE 0
 #define SET ENABLE

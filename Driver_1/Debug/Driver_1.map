@@ -81,14 +81,33 @@ Discarded input sections
  .group         0x00000000        0xc ./Driver/Src/stm32_SPI.o
  .group         0x00000000        0xc ./Driver/Src/stm32_SPI.o
  .group         0x00000000        0xc ./Driver/Src/stm32_SPI.o
+ .group         0x00000000        0xc ./Driver/Src/stm32_SPI.o
  .text          0x00000000        0x0 ./Driver/Src/stm32_SPI.o
  .data          0x00000000        0x0 ./Driver/Src/stm32_SPI.o
  .bss           0x00000000        0x0 ./Driver/Src/stm32_SPI.o
- .debug_info    0x00000000       0x69 ./Driver/Src/stm32_SPI.o
- .debug_abbrev  0x00000000       0x28 ./Driver/Src/stm32_SPI.o
- .debug_aranges
+ .text.SPI_Init
+                0x00000000       0x1c ./Driver/Src/stm32_SPI.o
+ .text.SPI_DeInit
+                0x00000000       0x12 ./Driver/Src/stm32_SPI.o
+ .text.SPI_PeriClockControl
+                0x00000000       0xb0 ./Driver/Src/stm32_SPI.o
+ .text.SPI_SendData
                 0x00000000       0x18 ./Driver/Src/stm32_SPI.o
- .debug_macro   0x00000000       0x7c ./Driver/Src/stm32_SPI.o
+ .text.SPI_ReceiveData_IT
+                0x00000000       0x18 ./Driver/Src/stm32_SPI.o
+ .text.SPI_IRQConfig
+                0x00000000       0x1a ./Driver/Src/stm32_SPI.o
+ .text.SPI_IRQPriorityConfig
+                0x00000000       0x16 ./Driver/Src/stm32_SPI.o
+ .text.SPI_IRQHandling
+                0x00000000       0x14 ./Driver/Src/stm32_SPI.o
+ .debug_info    0x00000000      0x3e5 ./Driver/Src/stm32_SPI.o
+ .debug_abbrev  0x00000000       0xe7 ./Driver/Src/stm32_SPI.o
+ .debug_aranges
+                0x00000000       0x58 ./Driver/Src/stm32_SPI.o
+ .debug_rnglists
+                0x00000000       0x3e ./Driver/Src/stm32_SPI.o
+ .debug_macro   0x00000000       0x81 ./Driver/Src/stm32_SPI.o
  .debug_macro   0x00000000      0xad2 ./Driver/Src/stm32_SPI.o
  .debug_macro   0x00000000       0x22 ./Driver/Src/stm32_SPI.o
  .debug_macro   0x00000000       0x8e ./Driver/Src/stm32_SPI.o
@@ -96,10 +115,12 @@ Discarded input sections
  .debug_macro   0x00000000      0x103 ./Driver/Src/stm32_SPI.o
  .debug_macro   0x00000000       0x6a ./Driver/Src/stm32_SPI.o
  .debug_macro   0x00000000      0x1df ./Driver/Src/stm32_SPI.o
- .debug_macro   0x00000000      0x250 ./Driver/Src/stm32_SPI.o
- .debug_line    0x00000000      0x460 ./Driver/Src/stm32_SPI.o
- .debug_str     0x00000000     0x4ceb ./Driver/Src/stm32_SPI.o
+ .debug_macro   0x00000000      0x27a ./Driver/Src/stm32_SPI.o
+ .debug_macro   0x00000000       0x88 ./Driver/Src/stm32_SPI.o
+ .debug_line    0x00000000      0x54e ./Driver/Src/stm32_SPI.o
+ .debug_str     0x00000000     0x519e ./Driver/Src/stm32_SPI.o
  .comment       0x00000000       0x44 ./Driver/Src/stm32_SPI.o
+ .debug_frame   0x00000000      0x130 ./Driver/Src/stm32_SPI.o
  .ARM.attributes
                 0x00000000       0x2d ./Driver/Src/stm32_SPI.o
  .group         0x00000000        0xc ./Src/main.o
@@ -608,12 +629,12 @@ LOAD C:/ST/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  *(.text)
  .text          0x08000130       0x40 C:/ST/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7-m/nofp/crtbegin.o
  *(.text*)
- .text.GPIO_Init
-                0x08000170      0x318 ./Driver/Src/stm32_GPIO.o
-                0x08000170                GPIO_Init
  .text.GPIO_PeriClockControl
-                0x08000488      0x170 ./Driver/Src/stm32_GPIO.o
-                0x08000488                GPIO_PeriClockControl
+                0x08000170      0x170 ./Driver/Src/stm32_GPIO.o
+                0x08000170                GPIO_PeriClockControl
+ .text.GPIO_Init
+                0x080002e0      0x318 ./Driver/Src/stm32_GPIO.o
+                0x080002e0                GPIO_Init
  .text.GPIO_WriteToOutputPin
                 0x080005f8       0x38 ./Driver/Src/stm32_GPIO.o
                 0x080005f8                GPIO_WriteToOutputPin
@@ -846,15 +867,15 @@ LOAD C:/ST/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
 LOAD C:/ST/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libm.a
 LOAD C:/ST/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7-m/nofp\libgcc.a
 
-.debug_info     0x00000000      0x7f9
- .debug_info    0x00000000      0x530 ./Driver/Src/stm32_GPIO.o
- .debug_info    0x00000530      0x299 ./Src/main.o
- .debug_info    0x000007c9       0x30 ./Startup/startup_stm32f103c8tx.o
+.debug_info     0x00000000      0x7f7
+ .debug_info    0x00000000      0x52e ./Driver/Src/stm32_GPIO.o
+ .debug_info    0x0000052e      0x299 ./Src/main.o
+ .debug_info    0x000007c7       0x30 ./Startup/startup_stm32f103c8tx.o
 
-.debug_abbrev   0x00000000      0x2b9
- .debug_abbrev  0x00000000      0x156 ./Driver/Src/stm32_GPIO.o
- .debug_abbrev  0x00000156      0x13f ./Src/main.o
- .debug_abbrev  0x00000295       0x24 ./Startup/startup_stm32f103c8tx.o
+.debug_abbrev   0x00000000      0x2d2
+ .debug_abbrev  0x00000000      0x16f ./Driver/Src/stm32_GPIO.o
+ .debug_abbrev  0x0000016f      0x13f ./Src/main.o
+ .debug_abbrev  0x000002ae       0x24 ./Startup/startup_stm32f103c8tx.o
 
 .debug_aranges  0x00000000       0xb8
  .debug_aranges
@@ -873,7 +894,7 @@ LOAD C:/ST/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_rnglists
                 0x00000067       0x19 ./Startup/startup_stm32f103c8tx.o
 
-.debug_macro    0x00000000     0x158f
+.debug_macro    0x00000000     0x15e3
  .debug_macro   0x00000000       0x81 ./Driver/Src/stm32_GPIO.o
  .debug_macro   0x00000081      0xad2 ./Driver/Src/stm32_GPIO.o
  .debug_macro   0x00000b53       0x22 ./Driver/Src/stm32_GPIO.o
@@ -882,21 +903,21 @@ LOAD C:/ST/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_macro   0x00000c54      0x103 ./Driver/Src/stm32_GPIO.o
  .debug_macro   0x00000d57       0x6a ./Driver/Src/stm32_GPIO.o
  .debug_macro   0x00000dc1      0x1df ./Driver/Src/stm32_GPIO.o
- .debug_macro   0x00000fa0      0x250 ./Driver/Src/stm32_GPIO.o
- .debug_macro   0x000011f0       0xca ./Driver/Src/stm32_GPIO.o
- .debug_macro   0x000012ba       0x7f ./Src/main.o
- .debug_macro   0x00001339      0x256 ./Src/main.o
+ .debug_macro   0x00000fa0      0x27a ./Driver/Src/stm32_GPIO.o
+ .debug_macro   0x0000121a       0xca ./Driver/Src/stm32_GPIO.o
+ .debug_macro   0x000012e4       0x7f ./Src/main.o
+ .debug_macro   0x00001363      0x280 ./Src/main.o
 
-.debug_line     0x00000000      0xf6a
- .debug_line    0x00000000      0xa22 ./Driver/Src/stm32_GPIO.o
- .debug_line    0x00000a22      0x4cd ./Src/main.o
- .debug_line    0x00000eef       0x7b ./Startup/startup_stm32f103c8tx.o
+.debug_line     0x00000000      0xf68
+ .debug_line    0x00000000      0xa20 ./Driver/Src/stm32_GPIO.o
+ .debug_line    0x00000a20      0x4cd ./Src/main.o
+ .debug_line    0x00000eed       0x7b ./Startup/startup_stm32f103c8tx.o
 
-.debug_str      0x00000000     0x50e0
- .debug_str     0x00000000     0x50e0 ./Driver/Src/stm32_GPIO.o
-                               0x51ae (size before relaxing)
- .debug_str     0x000050e0     0x507d ./Src/main.o
- .debug_str     0x000050e0       0x7f ./Startup/startup_stm32f103c8tx.o
+.debug_str      0x00000000     0x51e8
+ .debug_str     0x00000000     0x51e8 ./Driver/Src/stm32_GPIO.o
+                               0x52b6 (size before relaxing)
+ .debug_str     0x000051e8     0x5185 ./Src/main.o
+ .debug_str     0x000051e8       0x7f ./Startup/startup_stm32f103c8tx.o
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./Driver/Src/stm32_GPIO.o
